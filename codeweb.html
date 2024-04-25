@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heart Rate Monitor</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="script.js"></script>
+<style>
+    /* CSS styles */
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    table, th, td {
+        border: 1px solid #f8f6f6;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #f5f1f1;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Heart Rate Monitor</h2>
+    <label for="age">Select your age:</label>
+    <select id="age">
+        <option value="0-17">0 - 17</option>
+        <option value="18-64" selected>18 - 64</option>
+        <option value="65+">65+</option>
+    </select>
+    
+    <br>
+    <button id="getDataButton">Get Data</button>
+    <div id="dataDisplay"></div>
+    </br>
+    <!-- Table to display heart rate data -->
+    <table id="heartRateTable">
+        <thead>
+            <tr>
+                <th>Age Group</th>
+                <th>Measured Heart Rate (bpm)</th>
+                <th>Normal Range (bpm)</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Table body will be dynamically populated -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+    // JavaScript code
+    function checkHeartRate() {
+        var age = document.getElementById("age").value;
+        var heartRate = document.getElementById("heartRate").value;
+
+        // WHO heart rate standards
+        var standards = {
+            "0-17": [70, 190],
+            "18-64": [60, 100],
+            "65+": [50, 90]
+        };
+
+        var minRate = standards[age][0];
+        var maxRate = standards[age][1];
+
+        var result = "Normal";
+        if (heartRate < minRate || heartRate > maxRate) {
+            result = "Abnormal";
+        }
+
+        // Populate table with user input and comparison result
+        var tableBody = document.getElementById("tableBody");
+        var newRow = tableBody.insertRow();
+        newRow.insertCell(0).textContent = age;
+        newRow.insertCell(1).textContent = heartRate;
+        newRow.insertCell(2).textContent = minRate + " - " + maxRate;
+        newRow.insertCell(3).textContent = result;
+    }
+</script>
+</body>
+</html>
