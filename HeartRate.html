@@ -36,7 +36,7 @@
                 var selectedAge = $("#age").val();
                 // Gửi yêu cầu đến Arduino để đo nhịp tim và nhận dữ liệu
                 $.ajax({
-                    url: "YOUR_ARDUINO_ENDPOINT", // Thay thế bằng địa chỉ URL của máy chủ Arduino
+                    url: "https://thuthaot.github.io/Heart_Rate./HeartRate.html", // Thay thế bằng địa chỉ URL của máy chủ Arduino
                     type: "GET",
                     success: function(data) {
                         $("#dataDisplay").text("Heart rate: " + data); // Hiển thị dữ liệu nhận được lên trang web
