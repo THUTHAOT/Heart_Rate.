@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Rate Monitor</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Heart Rate Monitor</h1>
+    <label for="age">Select your age:</label>
+    <select id="age">
+        <option value="0-17">0 - 17</option>
+        <option value="18-64" selected>18 - 64</option>
+        <option value="65+">65+</option>
+    </select>
+    <br>
+    <button id="getDataButton">Get Data</button>
+    <div id="dataDisplay"></div>
+    </br>
+    <table id="heartRateTable">
+        <thead>
+            <tr>
+                <th>Age Group</th>
+                <th>Measured Heart Rate (bpm)</th>
+                <th>Normal Range (bpm)</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Table body will be dynamically populated -->
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready(function() {
+            $("#getDataButton").click(function() {
+                var selectedAge = $("#age").val();
+                // Gửi yêu cầu đến Arduino để đo nhịp tim và nhận dữ liệu
+                $.ajax({
+                    url: "YOUR_ARDUINO_ENDPOINT", // Thay thế bằng địa chỉ URL của máy chủ Arduino
+                    type: "GET",
+                    success: function(data) {
+                        $("#dataDisplay").text("Heart rate: " + data); // Hiển thị dữ liệu nhận được lên trang web
+                        // Gọi hàm để xử lý dữ liệu nhận được và hiển thị trong bảng
+                        processData(data, selectedAge);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Error: " + error); // Xử lý lỗi nếu có
+                    }
+                });
+            });
+        });
+
+        // Hàm xử lý dữ liệu nhận được từ Arduino và hiển thị trong bảng
+        function processData(data, selectedAge) {
+            // Giả sử dữ liệu nhận được từ Arduino là một chuỗi JSON
+            var heartRateData = JSON.parse(data);
+
+            // WHO heart rate standards
+            var standards = {
+                "0-17": [70, 190],
+                "18-64": [60, 100],
+                "65+": [50, 90]
+            };
+
+            var minRate = standards[selectedAge][0];
+            var maxRate = standards[selectedAge][1];
+
+            // Tạo dòng mới cho bảng
+            var newRow = "<tr>" +
+                            "<td>" + selectedAge + "</td>" +
+                            "<td>" + heartRateData.heartRate + "</td>" +
+                            "<td>" + minRate + " - " + maxRate + "</td>";
+            if (heartRateData.heartRate < minRate || heartRateData.heartRate > maxRate) {
+                newRow += "<td>Abnormal</td>";
+            } else {
+                newRow += "<td>Normal</td>";
+            }
+            newRow += "</tr>";
+
+            // Thêm dòng mới vào bảng
+            $("#tableBody").append(newRow);
+        }
+    </script>
+</body>
+</html>
