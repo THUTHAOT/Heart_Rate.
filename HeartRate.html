@@ -65,8 +65,8 @@
 </div>
 
 <!-- Import Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-database.js"></script>
 
 <script>
   // Initialize Firebase
@@ -82,13 +82,7 @@
   };
 
   firebase.initializeApp(firebaseConfig);
-  const analytics = firebase.analytics();
-</script>
 
-<!-- Import jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<script>
 $(document).ready(function() {
     $("#getDataButton").click(function() {
         var database = firebase.database();
