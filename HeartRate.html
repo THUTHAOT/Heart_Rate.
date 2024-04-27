@@ -101,15 +101,20 @@
                             "18-64": [60, 100],
                             "65+": [50, 90]
                         };
-                        var minRate = standards[age][0];
-                        var maxRate = standards[age][1];
-                        var result = (heartRate >= minRate && heartRate <= maxRate) ? "Normal" : "Abnormal";
-                        var newRow = $("<tr>");
-                        newRow.append($("<td>").text(age));
-                        newRow.append($("<td>").text(heartRate));
-                        newRow.append($("<td>").text(minRate + " - " + maxRate));
-                        newRow.append($("<td>").text(result));
-                        tableBody.append(newRow);
+                        var ageRange = standards[age];
+                        if (ageRange) {
+                            var minRate = ageRange[0];
+                            var maxRate = ageRange[1];
+                            var result = (heartRate >= minRate && heartRate <= maxRate) ? "Normal" : "Abnormal";
+                            var newRow = $("<tr>");
+                            newRow.append($("<td>").text(age));
+                            newRow.append($("<td>").text(heartRate));
+                            newRow.append($("<td>").text(minRate + " - " + maxRate));
+                            newRow.append($("<td>").text(result));
+                            tableBody.append(newRow);
+                        } else {
+                            console.log("No age range defined for age: " + age);
+                        }
                     }
                 }
             } else {
