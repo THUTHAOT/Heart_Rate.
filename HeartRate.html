@@ -73,24 +73,25 @@
   // Initialize Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyDRvjqG2LWB3rtw08wKxLKAD9Arcv6kC_8",
-  authDomain: "heartrate-d2223.firebaseapp.com",
-  databaseURL: "https://heartrate-d2223-default-rtdb.firebaseio.com",
-  projectId: "heartrate-d2223",
-  storageBucket: "heartrate-d2223.appspot.com",
-  messagingSenderId: "439631104884",
-  appId: "1:439631104884:web:acd339313dc505e50dfa21",
-  measurementId: "G-CTE7PYZTVB"
+    authDomain: "heartrate-d2223.firebaseapp.com",
+    databaseURL: "https://heartrate-d2223-default-rtdb.firebaseio.com",
+    projectId: "heartrate-d2223",
+    storageBucket: "heartrate-d2223.appspot.com",
+    messagingSenderId: "439631104884",
+    appId: "1:439631104884:web:acd339313dc505e50dfa21",
+    measurementId: "G-CTE7PYZTVB"
   };
 
   firebase.initializeApp(firebaseConfig);
 
   $(document).ready(function() {
     $("#getDataButton").click(function() {
+        var selectedAge = $("#age").val(); // Lấy giá trị tuổi đã chọn
         var database = firebase.database();
         database.ref("/heart_rate").once("value", function(snapshot) {
             var data = snapshot.val();
             var tableBody = $("#tableBody");
-            tableBody.empty(); // Clear existing data in table
+            tableBody.empty(); // Xóa dữ liệu hiện có trong bảng
             if (data) {
                 for (var key in data) {
                     if (data.hasOwnProperty(key)) {
@@ -102,7 +103,7 @@
                             "65+": [50, 90]
                         };
                         var ageRange = standards[age];
-                        if (ageRange) {
+                        if (age === selectedAge && ageRange) { // Kiểm tra tuổi đã chọn và tồn tại trong standards
                             var minRate = ageRange[0];
                             var maxRate = ageRange[1];
                             var result = (heartRate >= minRate && heartRate <= maxRate) ? "Normal" : "Abnormal";
@@ -112,8 +113,6 @@
                             newRow.append($("<td>").text(minRate + " - " + maxRate));
                             newRow.append($("<td>").text(result));
                             tableBody.append(newRow);
-                        } else {
-                            console.log("No age range defined for age: " + age);
                         }
                     }
                 }
