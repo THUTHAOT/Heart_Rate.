@@ -88,7 +88,7 @@
   $(document).ready(function() {
     $("#getDataButton").click(function() {
         var selectedAge = $("#age").val(); // Lấy giá trị tuổi đã chọn
-        database.ref("/heart_rate").once("value", function(snapshot) {
+        database.ref("/heart_rate").once("valueur", function(snapshot) {
             var data = snapshot.val();
             var tableBody = $("#tableBody");
             tableBody.empty(); // Xóa dữ liệu hiện có trong bảng
