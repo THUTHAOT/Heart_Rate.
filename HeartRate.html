@@ -93,6 +93,7 @@
   $(document).ready(function() {
     $("#getDataButton").click(function() {
         var selectedAge = $("#age").val(); // Lấy giá trị tuổi đã chọn
+        var database = firebase.database();
         database.ref("/heart_rate").once("value", function(snapshot) {
             var data = snapshot.val();
             var tableBody = $("#tableBody");
