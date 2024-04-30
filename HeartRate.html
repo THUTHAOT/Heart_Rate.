@@ -69,6 +69,8 @@
 
 <script>
 // Your web app's Firebase configuration
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 const firebaseConfig = {
     apiKey: "AIzaSyCJa9qytceKu_mHlH_W2-HUsjQTIXoSZaY",
     authDomain: "heartrate-129ae.firebaseapp.com",
@@ -81,8 +83,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 // Function to load data into table
 function loadDataIntoTable() {
     var selectedAge = $("#age").val();
