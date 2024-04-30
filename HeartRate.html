@@ -71,19 +71,28 @@
 <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js"></script>
 <script>
     // Your web app's Firebase configuration
-    const firebaseConfig = {
-        apiKey : "AIzaSyCJa9qytceKu_mHlH_W2-HUsjQTIXoSZaY" , 
-  authDomain : "heartrate-129ae.firebaseapp.com" , 
-  databaseURL : "https://heartrate-129ae-default-rtdb.firebaseio.com" , 
-  projectId : "heartrate-129ae" , 
-  storageBucket : "heartrate-129ae.appspot.com" , 
-  messagingSenderId : "384603214525" , 
-  appId : "1:384603214525:web:00e43883b1728682425dd4" , 
-  measurementId : "G-0XYXV2NWNW" 
-    };
+    // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCJa9qytceKu_mHlH_W2-HUsjQTIXoSZaY",
+  authDomain: "heartrate-129ae.firebaseapp.com",
+  databaseURL: "https://heartrate-129ae-default-rtdb.firebaseio.com",
+  projectId: "heartrate-129ae",
+  storageBucket: "heartrate-129ae.appspot.com",
+  messagingSenderId: "384603214525",
+  appId: "1:384603214525:web:00e43883b1728682425dd4",
+  measurementId: "G-0XYXV2NWNW"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
     $(document).ready(function() {
         $("#getDataButton").click(function() {
