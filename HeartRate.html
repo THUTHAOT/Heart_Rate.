@@ -34,6 +34,8 @@
     }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Import Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.11.1/firebase.js"></script>
 </head>
 <body>
 <div class="container">
@@ -65,62 +67,61 @@
     </table>
 </div>
 
-<!-- Import Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.5.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.5.1/firebase-analytics.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.5.1/firebase-database.js"></script>
 <script>
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCJa9qytceKu_mHlH_W2-HUsjQTIXoSZaY",
-  authDomain: "heartrate-129ae.firebaseapp.com",
-  databaseURL: "https://heartrate-129ae-default-rtdb.firebaseio.com",
-  projectId: "heartrate-129ae",
-  storageBucket: "heartrate-129ae.appspot.com",
-  messagingSenderId: "384603214525",
-  appId: "1:384603214525:web:00e43883b1728682425dd4",
-  measurementId: "G-0XYXV2NWNW"
+    apiKey: "AIzaSyCJa9qytceKu_mHlH_W2-HUsjQTIXoSZaY",
+    authDomain: "heartrate-129ae.firebaseapp.com",
+    databaseURL: "https://heartrate-129ae-default-rtdb.firebaseio.com",
+    projectId: "heartrate-129ae",
+    storageBucket: "heartrate-129ae.appspot.com",
+    messagingSenderId: "384603214525",
+    appId: "1:384603214525:web:00e43883b1728682425dd4",
+    measurementId: "G-0XYXV2NWNW"
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const app = firebase.initializeApp(firebaseConfig);
+const analytics = firebase.analytics();
 
-    $(document).ready(function() {
-        $("#getDataButton").click(function() {
-            var selectedAge = $("#age").val();
-            var database = firebase.database();
-            database.ref().once("value", function(snapshot) {
-                var data = snapshot.val();
-                var tableBody = $("#tableBody");
-                tableBody.empty();
-                if (data) {
-                    for (var key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            var heartRate = data[key];
-                            var age = key;
-                            var standards = {
-                                "0-17": [70, 190],
-                                "18-64": [60, 100],
-                                "65+": [50, 90]
-                            };
-                            var ageRange = standards[age];
-                            if (age === selectedAge && ageRange) {
-                                var minRate = ageRange[0];
-                                var maxRate = ageRange[1];
-                                var result = (heartRate >= minRate && heartRate <= maxRate) ? "Normal" : "Abnormal";
-                                var newRow = $("<tr>");
-                                newRow.append($("<td>").text(age));
-                                newRow.append($("<td>").text(heartRate));
-                                newRow.append($("<td>").text(minRate + " - " + maxRate));
-                                newRow.append($("<td>").text(result));
-                                tableBody.append(newRow);
-                            }
+$(document).ready(function() {
+    $("#getDataButton").click(function() {
+        var selectedAge = $("#age").val();
+        var databaseRef = firebase.database().ref();
+        databaseRef.once("value", function(snapshot) {
+            var data = snapshot.val();
+            var tableBody = $("#tableBody");
+            tableBody.empty();
+            if (data) {
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        var heartRate = data[key];
+                        var age = key;
+                        var standards = {
+                            "0-17": [70, 190],
+                            "18-64": [60, 100],
+                            "65+": [50, 90]
+                        };
+                        var ageRange = standards[age];
+                        if (age === selectedAge && ageRange) {
+                            var minRate = ageRange[0];
+                            var maxRate = ageRange[1];
+                            var result = (heartRate >= minRate && heartRate <= maxRate) ? "Normal" : "Abnormal";
+                            var newRow = $("<tr>");
+                            newRow.append($("<td>").text(age));
+                            newRow.append($("<td>").text(heartRate));
+                            newRow.append($("<td>").text(minRate + " - " + maxRate));
+                            newRow.append($("<td>").text(result));
+                            tableBody.append(newRow);
                         }
                     }
-                } else {
-                    console.log("No data available.");
                 }
-            });
+            } else {
+                console.log("No data available.");
+            }
         });
     });
+});
 </script>
+</body>
+</html>
